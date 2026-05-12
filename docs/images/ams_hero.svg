@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="560" viewBox="0 0 1400 560">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="0.55" stop-color="#1f2937"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+    <pattern id="p" width="70" height="70" patternUnits="userSpaceOnUse">
+      <path d="M35 0 L70 70 L0 70 Z" fill="rgba(255,255,255,0.035)"/>
+    </pattern>
+  </defs>
+  <rect width="1400" height="560" rx="36" fill="url(#g)"/>
+  <rect width="1400" height="560" rx="36" fill="url(#p)"/>
+  <circle cx="1120" cy="130" r="220" fill="rgba(20,184,166,0.13)"/>
+  <circle cx="1160" cy="160" r="135" fill="rgba(45,212,191,0.12)"/>
+  <text x="90" y="175" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="82" font-weight="800" fill="#ffffff">AMS</text>
+  <text x="90" y="250" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="38" font-weight="600" fill="#d1fae5">Anechoic Chamber Antenna Measurement System</text>
+  <text x="90" y="315" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="25" fill="#d1d5db">Automated VNA + FS-121 radiation-pattern scans for the Cal Poly Microwave Lab</text>
+  <rect x="90" y="375" width="235" height="54" rx="27" fill="#14b8a6"/>
+  <text x="128" y="410" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#062f2b">Python GUI</text>
+  <rect x="350" y="375" width="265" height="54" rx="27" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)"/>
+  <text x="391" y="410" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" fill="#ffffff">Hardware + Simulation</text>
+  <text x="1040" y="432" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" fill="#a7f3d0">Replace this hero with a chamber photo</text>
+</svg>
