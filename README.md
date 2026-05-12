@@ -1,200 +1,175 @@
-<div align="center">
-  <img src="docs/images/ams_hero.svg" alt="AMS anechoic chamber hero placeholder" width="100%">
+# AMS — Anechoic Chamber Antenna Measurement System
 
-  <h1>AMS</h1>
-  <p><strong>Antenna Measurement System for the Cal Poly Microwave Lab Anechoic Chamber</strong></p>
+Python control software for the Cal Poly Electrical Engineering Microwave Lab anechoic chamber. AMS provides a simple one-screen GUI for running antenna radiation-pattern scans with a VNA and Sunol Sciences FS-121 positioner.
 
-  <p>
-    <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-blue">
-    <img alt="GUI" src="https://img.shields.io/badge/GUI-Tkinter-lightgrey">
-    <img alt="Hardware" src="https://img.shields.io/badge/Hardware-VNA%20%2B%20FS--121-orange">
-    <img alt="Status" src="https://img.shields.io/badge/Mode-Hardware%20%7C%20Simulation-brightgreen">
-  </p>
-</div>
+<p align="center">
+  <img src="docs/images/chamber_setup.jpg" alt="Microwave Lab anechoic chamber setup" width="700">
+  <br>
+  <em>TODO: replace with a photo of the chamber, AUT fixture, receive antenna, and cabling.</em>
+</p>
 
----
-
-**AMS** is a Python-based control interface for running antenna radiation-pattern scans in an anechoic chamber. It coordinates a vector network analyzer, a Sunol Sciences FS-121 positioner, and a clean Tkinter GUI to rotate an antenna under test, collect S21 measurements, and save normalized polar radiation plots.
-
-## Install
+## Quick install
 
 ```bash
 git clone https://github.com/prestonmavady/ams.git
 cd ams
-
 python -m venv .venv
 source .venv/bin/activate        # macOS/Linux
 # .venv\Scripts\activate       # Windows
-
 pip install numpy matplotlib pyvisa pyvisa-py
 python ams/ams.py
 ```
 
-For real hardware, also install the correct drivers for your lab computer:
+For real hardware, install the correct VISA stack and drivers first:
 
-- **NI-VISA** or another compatible VISA backend
-- **GPIB-to-USB driver** for the VNA
-- **USB-to-RS-232 driver** for the FS-121 positioner
+- NI-VISA or compatible VISA backend for GPIB/serial communication
+- GPIB-to-USB driver for the VNA
+- USB-to-RS-232 driver for the FS-121 positioner
 
-No chamber access? Enable **Simulation Mode** in the GUI to test the workflow without instruments connected.
+For GUI-only testing, enable **Simulation Mode** in AMS and run scans without connecting hardware.
 
-## Preview
+## What AMS does
 
-<table>
-  <tr>
-    <td width="50%"><img src="docs/images/chamber_setup.svg" alt="Chamber setup placeholder"></td>
-    <td width="50%"><img src="docs/images/ams_gui.svg" alt="AMS GUI screenshot placeholder"></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Chamber Setup</strong><br><sub>Replace with a wide photo of the chamber, AUT fixture, receive antenna, and cabling.</sub></td>
-    <td align="center"><strong>AMS GUI</strong><br><sub>Replace with a screenshot of the configured scan window.</sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="docs/images/scan_running.svg" alt="Scan running placeholder"></td>
-    <td width="50%"><img src="docs/images/polar_output.svg" alt="Polar output placeholder"></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Scan in Progress</strong><br><sub>Replace with a screenshot while AMS is collecting angle points.</sub></td>
-    <td align="center"><strong>Radiation Pattern Output</strong><br><sub>Replace with an exported normalized polar plot.</sub></td>
-  </tr>
-</table>
+AMS automates a basic antenna radiation-pattern measurement:
 
-To use real images, place them in `docs/images/` and either overwrite the placeholder SVGs or update the image paths in this README.
+1. Rotates the antenna under test (AUT) using the FS-121 positioner.
+2. Commands the VNA to measure **S21** at each angle.
+3. Saves a tab-delimited data file with `Phi`, `Log Magnitude`, and `Phase`.
+4. Displays the pattern in the GUI.
+5. Saves a normalized polar radiation-pattern image.
+6. Estimates HPBW/directivity using the legacy AMS MATLAB logic rewritten in Python.
 
-## What AMS Does
+<p align="center">
+  <img src="docs/images/ams_gui_main.png" alt="AMS main GUI screenshot" width="700">
+  <br>
+  <em>TODO: replace with a screenshot of the AMS main window during or after a scan.</em>
+</p>
 
-AMS turns a manual chamber measurement into a repeatable scan workflow:
+## Hardware setup
 
-```mermaid
-flowchart LR
-    A[Mount AUT] --> B[Connect VNA and FS-121]
-    B --> C[Set frequency, span, step size]
-    C --> D[Rotate positioner]
-    D --> E[Measure S21]
-    E --> F[Save TSV data]
-    F --> G[Generate polar plot]
-```
+Typical chamber setup:
 
-Core capabilities:
+- **VNA Port 1** → antenna under test (AUT) on the rotating positioner
+- **VNA Port 2** → receive/reference antenna on the fixed fixture
+- **PC USB/GPIB** → VNA
+- **PC USB/RS-232** → FS-121 positioner
+- Chamber panels/windows closed before scanning
 
-- Connects to a VNA over VISA/GPIB
-- Controls a Sunol Sciences FS-121 turntable over RS-232
-- Runs full or partial azimuth radiation-pattern scans
-- Records S21 magnitude and phase versus angle
-- Saves tab-delimited data for MATLAB, Python, Excel, or reports
-- Generates normalized polar plots automatically
-- Supports chamber calibration profiles for corrected measurements
-- Includes simulation mode for software testing without hardware
-
-## Hardware Setup
-
-Typical measurement chain:
-
-| Connection | Description |
-|---|---|
-| VNA Port 1 | Antenna under test on the rotating FS-121 fixture |
-| VNA Port 2 | Receive/reference antenna on the fixed fixture |
-| PC to VNA | USB/GPIB adapter through VISA |
-| PC to FS-121 | USB/RS-232 adapter |
-| Chamber | Panels closed before measurement |
-
-Default resources in the GUI:
+Default instrument addresses in `ams.py`:
 
 ```text
 Positioner: ASRL5::INSTR
 VNA:        GPIB0::28::INSTR
 ```
 
-Update these fields if your COM port, GPIB address, or VISA backend is different.
+Update these in the GUI if your COM port or GPIB address is different.
 
-## Run a Radiation-Pattern Scan
+## Running a radiation-pattern scan
 
-1. Launch AMS.
-2. Select the VISA backend if needed. Leave blank for the default backend, or use `@py` for `pyvisa-py`.
-3. Confirm the VNA and positioner resource strings.
+1. Open AMS.
+2. Choose the **VISA backend** if needed. Leave blank for the normal VISA backend, or use `@py` for `pyvisa-py`.
+3. Confirm the **positioner resource** and **VNA resource**.
 4. Click **Connect**.
-5. Choose the save folder and base file name.
+5. Choose a **Save folder** and **Base file name**.
 6. Enter scan settings:
-   - **CW frequency** in GHz
-   - **Scan span** in degrees, usually `360`
-   - **Step size** in degrees
-   - **Settle delay** after each move
-7. Verify the AUT is secure, near boresight, and the cable will not twist or snag.
+   - `CW frequency (GHz)` — measurement frequency
+   - `Scan span (deg)` — normally `360` for a full pattern, or smaller for a focused main-lobe scan
+   - `Step size (deg)` — smaller is higher resolution, larger is faster
+   - `Settle delay (s)` — delay after each move before reading S21
+7. Confirm the AUT is pointed near boresight and that cables will not twist or bind.
 8. Click **Run Scan**.
-9. Save the generated `.tsv` data and `.png` polar plot with your lab notes.
+9. When the scan finishes, open the output folder and save/record the generated `.tsv` and `.png` files.
 
-## Outputs
+<p align="center">
+  <img src="docs/images/radiation_pattern_example.png" alt="Example normalized radiation pattern output" width="600">
+  <br>
+  <em>TODO: replace with a normalized polar plot generated by AMS.</em>
+</p>
 
-| File | Description |
+## Output files
+
+AMS saves results in the selected output folder.
+
+| File | Purpose |
 |---|---|
-| `*_pattern.tsv` | Angle, S21 log magnitude, and phase data |
+| `*_pattern.tsv` | Tab-delimited radiation-pattern data: angle, log magnitude, phase |
 | `*_polar.png` | Normalized polar radiation-pattern plot |
-| `ams_chamber_calibration_profile.json` | Saved chamber calibration profile |
-| `ams_chamber_calibration_table.tsv` | Human-readable calibration table |
+| `ams_chamber_calibration_profile.json` | Saved chamber calibration profile, if used |
+| `ams_chamber_calibration_table.tsv` | Human-readable calibration table, if used |
 
-Partial scans are padded at `-180` and `+180` with `NaN` rows so downstream plotting tools keep a consistent angular range.
+Partial scans are padded with `-180` and `+180` rows containing `NaN` values so plotting and downstream tools keep a consistent angular range.
 
-## Chamber Calibration
+## Chamber calibration
 
-Use chamber calibration when you need corrected measurements instead of only relative normalized patterns.
+AMS can save a chamber calibration profile, `K(f)`, using two known/reference antennas at boresight. Use this when you want scans corrected by the chamber/reference setup rather than only normalized relative patterns.
 
-1. Mount known/reference TX and RX antennas at boresight.
-2. Enter the frequency range and frequency step.
-3. Enter the known antenna gains.
+Basic flow:
+
+1. Mount the reference transmit and receive antennas at boresight.
+2. Enter calibration frequency range and step size.
+3. Enter known TX/RX antenna gains.
 4. Click **Run Chamber Calibration**.
-5. Keep **Apply saved chamber calibration** enabled for corrected scans.
+5. Leave **Apply saved chamber calibration to radiation pattern scans** checked for corrected scans.
 
-For quick shape checks, an uncorrected normalized scan is usually sufficient. For report-quality measurements, calibrate the VNA and chamber setup first.
+For quick antenna-shape checks, a normalized uncorrected scan is often enough. For report-quality measurements, calibrate the VNA/chamber setup first.
 
-## Safety Checklist
+## Manual controls and debug tools
 
-Before every scan:
+AMS includes quick hardware tools for setup and troubleshooting:
 
-- [ ] AUT is mechanically secure.
-- [ ] SMA/coax cables have large-radius bends.
-- [ ] Cable path will not twist, snag, scrape foam, or pull tight.
-- [ ] Chamber foam is not being touched or compressed.
-- [ ] Chamber panels/windows are closed.
-- [ ] Scan span and zero position are reasonable.
-- [ ] **Stop** button is visible and ready if anything moves incorrectly.
+- Positioner jog, continuous CW/CCW motion, stop, go-to-zero, set-zero-here
+- VNA `IDN?`, manual command send/query, preset, hold, single sweep
+- One-shot S21 reading at the current angle
+- Debug/error panel for raw messages and exceptions
+
+Use **Stop** immediately if a cable begins to twist, snag, or pull tight.
+
+## Safety notes
+
+- Do not touch or crush the RF absorber foam.
+- Use large-radius bends for SMA/coax cables.
+- Route the AUT cable so the positioner can rotate without scraping foam or twisting the cable.
+- Keep metal tools/hardware out of the chamber during measurements unless they are part of the test setup.
+- Verify the antenna is secure before starting a sweep.
+- Keep scan angles within the software limits unless you are intentionally re-zeroing the positioner.
 
 ## Troubleshooting
 
-| Symptom | Check |
+| Symptom | Try this |
 |---|---|
-| VNA will not connect | GPIB address, cable, VISA installation, VNA power, and backend setting |
-| Positioner will not connect | COM port, USB/RS-232 driver, power strip, and resource string |
-| Positioner moves incorrectly | Stop, re-zero, verify CW/CCW orientation, then jog slowly |
-| Pattern is flat or noisy | Frequency, antenna alignment, VNA calibration, port connections, and chamber closure |
-| Cable begins twisting | Stop immediately, reroute the cable, re-zero, and restart |
-| No hardware available | Enable Simulation Mode |
+| No VNA connection | Check GPIB cable, VNA address, VISA install, and power-cycle the VNA. |
+| No positioner connection | Check COM port, USB/RS-232 driver, power strip, and resource string. |
+| Positioner moves the wrong way | Stop, set zero carefully, and verify CW/CCW orientation before scanning. |
+| Scan data looks flat/noisy | Check antenna alignment, VNA correction/calibration, frequency, port connections, and chamber panels. |
+| Cables twist during scan | Stop immediately, reroute cable through the mast/fixture, then re-zero before scanning. |
+| GUI works but hardware is unavailable | Enable Simulation Mode for software testing. |
 
-## Project Structure
+## Recommended repo image slots
+
+Add these images to make the README feel complete:
+
+```text
+docs/images/chamber_setup.jpg          # wide photo of the full chamber setup
+docs/images/aut_mount.jpg              # close-up of the AUT on the FS-121 fixture
+docs/images/ams_gui_main.png           # GUI screenshot with configured scan settings
+docs/images/scan_running.png           # GUI screenshot while collecting points
+docs/images/radiation_pattern_example.png  # example polar output image
+```
+
+## Project layout
 
 ```text
 ams/
-└── ams.py          # GUI, hardware control, scan logic, calibration, plotting
-
-docs/images/        # README photos and screenshots
+└── ams.py      # main AMS GUI, instrument control, scan logic, plotting, calibration
 ```
 
-## Suggested Image Replacements
+## Notes for maintainers
 
-| File | Replace with |
-|---|---|
-| `docs/images/ams_hero.svg` | Wide hero image of the chamber or AMS in use |
-| `docs/images/chamber_setup.svg` | Full chamber measurement setup |
-| `docs/images/ams_gui.svg` | AMS main GUI configured for a scan |
-| `docs/images/scan_running.svg` | GUI while collecting scan data |
-| `docs/images/polar_output.svg` | Example generated polar radiation pattern |
-
-## Notes for Maintainers
-
-- Keep **Simulation Mode** working so AMS can be developed without chamber access.
-- Keep hardware resource strings easy to edit from the GUI.
-- Prefer simple tab-delimited outputs so results remain usable in MATLAB, Python, Excel, and lab reports.
-- Document any chamber-specific defaults directly in the README when the lab setup changes.
+- The current code is intentionally contained in one heavily commented Python file.
+- Hardware defaults are tuned for the Microwave Lab setup; keep resource strings easy to edit.
+- Preserve Simulation Mode so future developers can test the GUI without chamber access.
+- Keep output files simple and tab-delimited so MATLAB, Excel, Python, and lab reports can all use them.
 
 ## Credits
 
-Built for the Cal Poly Electrical Engineering Microwave Lab anechoic chamber. The Python implementation follows the original AMS measurement workflow while making the system easier to run, teach, and maintain.
+Built for the Cal Poly Electrical Engineering Microwave Lab anechoic chamber. The Python implementation follows the measurement flow and plotting/directivity behavior of the original AMS workflow while making the system easier to run and maintain.
