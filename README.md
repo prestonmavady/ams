@@ -51,38 +51,9 @@ python ams.py
 
 This should take ~3 minutes. **When you see 'python ams.py' in the command prompt, hit enter**. AMS should open.
 
-### If `python` is not recognized
-
-Install Python from the Microsoft Store or from python.org.
-
-Then close command prompt, reopen it, and check:
-
-```command prompt
-python --version
-```
-
-Then run:
-
-```command prompt
-cd Documents\ams
-python ams.py
-```
 
 ---
 
-## Overview
-
-**AMS** stands for **Anechoic Chamber Measurement System**.
-
-It is a Python GUI built for antenna testing in the Cal Poly Microwave Lab anechoic chamber. AMS makes radiation-pattern measurements faster, easier, and more repeatable.
-
-Instead of manually rotating an antenna and recording VNA readings one at a time, AMS automates the scan loop:
-
-```text
-move turntable -> wait -> read VNA -> save angle/gain/phase -> update plots -> export results
-```
-
----
 
 ## Running a Scan
 
@@ -102,7 +73,10 @@ python ams.py
 8. Zero the positioner at boresight.
 9. Run the radiation-pattern scan.
 10. Open the saved results folder.
+
+
 ---
+
 
 ### One-screen scan control
 
