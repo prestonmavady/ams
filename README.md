@@ -49,7 +49,7 @@ python -m pip install pyvisa pyserial numpy matplotlib
 python ams.py
 ```
 
-This should take ~3 minutes. When you see 'python ams.py' in the command prompt, **hit enter******. AMS should open.
+This should take ~3 minutes. **When you see 'python ams.py' in the command prompt, hit enter**. AMS should open.
 
 ### If `python` is not recognized
 
