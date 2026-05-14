@@ -28,8 +28,6 @@
 
 ## Quick Start
 
-This project is designed to run on **Windows**.
-
 ### Step 1 — Open Command Prompt
 
 Click the Windows search bar, type:
