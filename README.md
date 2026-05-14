@@ -30,24 +30,20 @@
 
 This project is designed to run on **Windows**.
 
-No virtual environment.  
-No complicated setup.  
-Just clone the repo and run `ams.py`.
-
-### Step 1 — Open PowerShell
+### Step 1 — Open Command Prompt
 
 Click the Windows search bar, type:
 
 ```text
-PowerShell
+Command Prompt
 ```
 
-Open **Windows PowerShell**.
+Open **Windows Command Prompt**.
 
 ### Step 2 — Copy and paste this into PowerShell
 
 ```powershell
-cd $env:USERPROFILE\Documents
+cd Documents
 git clone https://github.com/prestonmavady/ams.git
 cd ams
 python ams.py
