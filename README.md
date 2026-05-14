@@ -94,19 +94,6 @@ The AMS GUI keeps the full measurement workflow on one screen: positioner contro
 
 The system is built around a compact anechoic chamber with RF absorber, a rotating antenna-under-test fixture, and a fixed receive antenna.
 
----
-
-## What It Does
-
-| Feature | Description |
-|---|---|
-| Automated scans | Rotates the antenna through a selected angular span and records VNA data |
-| Positioner control | Controls the Sunol Sciences FS-121 turntable |
-| VNA measurements | Captures gain and phase at each angle |
-| Live plotting | Shows gain-vs-angle and polar radiation-pattern plots |
-| CSV export | Saves scan data for later analysis |
-| Plot export | Saves clean radiation-pattern figures |
-| Debug logging | Shows scan status, errors, and saved file paths |
 
 ---
 
