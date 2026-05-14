@@ -112,19 +112,6 @@ flowchart LR
 
 ---
 
-## Hardware Stack
-
-| Component | Purpose |
-|---|---|
-| Anechoic chamber | Reduces reflections during antenna testing |
-| Sunol Sciences FS-121 | Rotates the antenna under test |
-| Vector Network Analyzer | Measures RF response |
-| Transmit / receive antennas | Create the chamber measurement path |
-| Windows lab computer | Runs `ams.py` |
-| AMS Python GUI | Controls the scan and saves results |
-
----
-
 ## Outputs
 
 AMS saves measurement data and plots that can be used in lab reports, design reviews, and antenna verification work.
@@ -153,14 +140,3 @@ Phi (deg)    Log Magnitude (dB)    Phase (deg)
 -160.000     -33.225                152.625
 ...
 ```
-
----
-
-## Safety Notes
-
-- Do not touch or crush the chamber absorber foam.
-- Keep coax cable bends gentle.
-- Make sure the antenna can rotate without hitting the chamber.
-- Make sure RF cables have enough slack before starting a scan.
-- Start with a small scan span when testing a new antenna setup.
-- Stop the scan immediately if the antenna, cable, or fixture binds.
