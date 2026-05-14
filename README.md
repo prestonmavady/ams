@@ -49,13 +49,13 @@ python -m pip install pyvisa pyserial numpy matplotlib
 python ams.py
 ```
 
-This should take ~3 minutes. When you see 'python ams.py' in the command prompt, hit enter. AMS should open.
+This should take ~3 minutes. When you see 'python ams.py' in the command prompt, **hit enter******. AMS should open.
 
 ### If `python` is not recognized
 
 Install Python from the Microsoft Store or from python.org.
 
-Then close PowerShell, reopen it, and check:
+Then close command prompt, reopen it, and check:
 
 ```command prompt
 python --version
@@ -84,7 +84,25 @@ move turntable -> wait -> read VNA -> save angle/gain/phase -> update plots -> e
 
 ---
 
-## Showcase
+## Running a Scan
+
+1. Open AMS:
+
+```powershell
+cd $env:USERPROFILE\Documents\ams
+python ams.py
+```
+
+2. Connect the VNA and FS-121 turntable.
+3. Mount the antenna under test.
+4. Align the receive antenna.
+5. Set the scan frequency.
+6. Set the angular span.
+7. Set the step size.
+8. Zero the positioner at boresight.
+9. Run the radiation-pattern scan.
+10. Open the saved results folder.
+---
 
 ### One-screen scan control
 
@@ -174,27 +192,6 @@ Phi (deg)    Log Magnitude (dB)    Phase (deg)
 -160.000     -33.225                152.625
 ...
 ```
-
----
-
-## Running a Scan
-
-1. Open AMS:
-
-```powershell
-cd $env:USERPROFILE\Documents\ams
-python ams.py
-```
-
-2. Connect the VNA and FS-121 turntable.
-3. Mount the antenna under test.
-4. Align the receive antenna.
-5. Set the scan frequency.
-6. Set the angular span.
-7. Set the step size.
-8. Zero the positioner at boresight.
-9. Run the radiation-pattern scan.
-10. Open the saved results folder.
 
 ---
 
