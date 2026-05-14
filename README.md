@@ -38,26 +38,18 @@ Command Prompt
 
 Open **Windows Command Prompt**.
 
-### Step 2 — Copy and paste this into PowerShell
+### Step 2 — Copy and paste this into Command Prompt
 
-```powershell
+```command prompt
+winget install --id Git.Git -e --source winget
 cd Documents
 git clone https://github.com/prestonmavady/ams.git
 cd ams
+python -m pip install pyvisa pyserial numpy matplotlib
 python ams.py
 ```
 
-That’s it. AMS should open.
-
-### If `git` is not recognized
-
-Install Git:
-
-```powershell
-winget install --id Git.Git -e --source winget
-```
-
-Then close PowerShell, reopen it, and run the Quick Start commands again.
+AMS should open.
 
 ### If `python` is not recognized
 
@@ -65,28 +57,14 @@ Install Python from the Microsoft Store or from python.org.
 
 Then close PowerShell, reopen it, and check:
 
-```powershell
+```command prompt
 python --version
 ```
 
 Then run:
 
-```powershell
-cd $env:USERPROFILE\Documents\ams
-python ams.py
-```
-
-### If AMS says a Python module is missing
-
-Run this once:
-
-```powershell
-python -m pip install pyvisa pyserial numpy matplotlib
-```
-
-Then run AMS again:
-
-```powershell
+```command prompt
+cd Documents\ams
 python ams.py
 ```
 
